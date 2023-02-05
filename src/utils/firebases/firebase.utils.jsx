@@ -6,6 +6,8 @@ import {
   signInWithRedirect,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  signOut,
+  onAuthStateChanged,
 } from "firebase/auth";
 import { getFirestore, doc, getDoc, setDoc } from "firebase/firestore";
 
@@ -34,7 +36,7 @@ export const createUserDocumentFromAuth = async (
   additionalInformation = {}
 ) => {
   if (!userAuth) return;
-  const userDocRef = doc(db, `users/${userAuth.uid}`);
+  const userDocRef = doc(db, "users", userAuth.uid);
   const userSnapshot = await getDoc(userDocRef);
   if (!userSnapshot.exists()) {
     const { displayName, email } = userAuth;
@@ -70,3 +72,14 @@ export const signInAuthUserWithEmailAndPassword = async (email, password) => {
     console.log("Giriş yapılırken bir hata oluştu!", error.message);
   }
 };
+
+export const signOutAuthUser = async () => {
+  try {
+    await signOut(auth);
+  } catch (error) {
+    console.log("Çıkış yapılırken bir hata oluştu!", error.message);
+  }
+};
+
+export const onAuthStateChangedListener = (callback) =>
+  onAuthStateChanged(auth, callback);
