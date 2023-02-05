@@ -5,6 +5,7 @@ import {
   GoogleAuthProvider,
   signInWithRedirect,
   createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
 } from "firebase/auth";
 import { getFirestore, doc, getDoc, setDoc } from "firebase/firestore";
 
@@ -58,5 +59,14 @@ export const createAuthUserWithEmailAndPassword = async (email, password) => {
     return await createUserWithEmailAndPassword(auth, email, password);
   } catch (error) {
     console.log("Kullanıcı oluşturulurken bir hata oluştu!", error.message);
+  }
+};
+
+export const signInAuthUserWithEmailAndPassword = async (email, password) => {
+  try {
+    if (!email || !password) return;
+    return await signInWithEmailAndPassword(auth, email, password);
+  } catch (error) {
+    console.log("Giriş yapılırken bir hata oluştu!", error.message);
   }
 };
